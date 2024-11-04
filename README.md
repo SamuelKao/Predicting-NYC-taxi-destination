@@ -4,6 +4,8 @@
 
 * **Data Source:** https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page
 * **Data Description:** On the website you will find “Yellow Taxi Trip Records (PARQUET)” download links for every month of 2023, download these and place them on your google drive in a “CSE151GP” folder in a “data” subfolder (My Drive/CSE151GP/data/ is the relative path). The notebook will then mount to your drive and place this data into pandas dataframes once you run the program.
+* **Taxi Zone Data source** https://data.cityofnewyork.us/Transportation/NYC-Taxi-Zones/d3c5-ddgc
+* **Taxi Zone Data Description** Export the data into a csv file and open it with google sheets and make sure it has the name "Location_ID_encoder.xlsx". Then place the xlsx file in the same data folder as with the parquet files of the data. The notebook will then be able to read this file as well once you have mounted your drive.
 
 ## Environment Setup
 The environment being used is the default google colab environment from 11-03-2024, but with the “holidays” package installed with pip. For future reproducibility we have attached a requirements.txt file.

@@ -5,7 +5,7 @@
 * **Data Source:** https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page
 * **Data Description:** On the website you will find “Yellow Taxi Trip Records (PARQUET)” download links for every month of 2023, download these and place them on your google drive in a “CSE151GP” folder in a “data” subfolder (My Drive/CSE151GP/data/ is the relative path). The notebook will then mount to your drive and place this data into pandas dataframes once you run the program.
 * **Taxi Zone Data source** https://data.cityofnewyork.us/Transportation/NYC-Taxi-Zones/d3c5-ddgc
-* **Taxi Zone Data Description** Export the data into a csv file and open it with google sheets and make sure it has the name "Location_ID_encoder.xlsx". Then place the xlsx file in the same data folder as with the parquet files of the data. The notebook will then be able to read this file as well once you have mounted your drive.
+* **Taxi Zone Data Description** Export the data into a tsv file and make sure it has the name "taxi_zones.tsv". Then place the tsv file in the same data folder as with the parquet files of the data. The notebook will then be able to read this file as well once you have mounted your drive.
 
 ## Environment Setup
 The environment being used is the default google colab environment from 11-03-2024, but with the “holidays” package installed with pip. For future reproducibility we have attached a requirements.txt file.
@@ -57,3 +57,20 @@ The first model had an accuracy of 12.38% on the test data and 14.01% on the tra
 In the fitting graph, the model is underfitting since the training MSE has not improved more than the test MSE. Therefore we know that the model needs futher training or a another model should be used. 
 
 For the next model we are thinking about training a neural network since that is scaleable to bigger datasets. The multinomial logistic regression takes very long even for the small sample we used and since we have a large dataset we want to use a model that can handle all of that to get a better model. For the next model we therfore should also be able to use more of the data which will probably lead to better accuracy as well. 
+
+## Second Model
+The second(and technically third) model is a Multi Layer Perceptron (MLP) Neural network that also predicts a probability for every output class. First, sk-learns MLP model was used. This model was relatively slow which was balanced out by using less data. After switching to our own implementation of an MLP with pytorch, we got a faster model and could therefor also use more data for training the model. 
+
+### Evaluation
+Evaluation for the second model was the same as for the first i.e. accuracy is counted as correctly predicted within the top five. 
+
+### Result of second model
+The accuracy, as described above, resulted in 27.1% for testing data and 27.0% for training data. The model was trained using 1% of our data.
+
+### Conclusion of second model
+The model is better than the first one, and it especially allowed us to use more of our data while also being faster to train. In the fitting graph we are still underfitting since the training and test accuracy is both slowly still improving for every training epoch when we stop training. This leads us to believe that we can improve our model with more training and if we use more data. 
+For tuning the model, we focused on finding the best kind of model which landed us in our own version with pytorch after trying sk learns version.
+The main tuning we did was for the model size, concluding that a bigger model was better, but we have yet to find an optimal size.
+To improve the model we therefore also plan to do some more hyperparameter tuning, for example the learning rate, batch size and model size. 
+
+For the final model we are happy with using a MLP model and together with some hyperparameter tuning and training with more data we are hopeful to achieve a slightly better version than the second model. 

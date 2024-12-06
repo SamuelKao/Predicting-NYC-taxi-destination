@@ -18,11 +18,19 @@ The environment being used is the default google colab environment from 11-03-20
     ```bash
     pip install -r requirements.txt 
     ```
+## Abstract
 
 ## Preprocessing
 
 ### Data Description
 The data consists of a 12 parquet files with data from all cabs in New York in 2023. We then load these files into data frames, each represententing a different month of the year, and in total it is around 38 million data points. Every datapoint has 19 features of different kinds of formats ranging from datetime, int, float and object, meaning that some features need to be encoded in order to be useful. The data is retrieved from The Taxi & Limousine Commission (TLC) and includes some data points with missing features and outliers and therefore the data need to be cleaned before it can be used. 
+
+#### Data distribution
+
+The timestamps of the taxi rides are distributed over the day and can be seen in the figure below. We can see that there are more rides during the day than in the night. This is just a small sample of all of the data but we can see that it follows a  reasonable pattern which is good. 
+![image](https://github.com/user-attachments/assets/bbdda38e-5572-4ef6-8fa2-c886c16f5f68)
+Similarly the data is distributed over the entire year in the figure seen below where we have plotted a small sample of the data. We expect the data to be evenly distributed over the year and we can see that it usually does. However we can identify a smaller frequency in september and even after switching samples we still get the same result. Investigating this further we did not find any special event happening in New York for this day, but since we still have a lot of data we dont think it will influence the model. 
+![image](https://github.com/user-attachments/assets/3956a34a-cea4-4d5a-bf00-01c240939d2f)
 
 
 ### Relevant data

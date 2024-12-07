@@ -161,4 +161,4 @@ Due to the size of this data, we can conclude that the accuracy in project would
 
 Axel Orrhede: back-end-specialist: coding a lot, writing the reports, coding some more, teamworker, communicator
 Rebecka Eldh: all-in-all-doer: writing the reports, coding, teamworker, communicator
-Chi-en (Samuel) Kao: title: Contribution
+Chi-en (Samuel) Kao: some data preprocessing, training baseline model, tuning hyperparameter, communicator, teamwoker.

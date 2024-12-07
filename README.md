@@ -88,12 +88,11 @@ The model is described as the following formula where we are training the beta v
 ![image](https://github.com/user-attachments/assets/2155cb95-af2e-4d4f-b479-a2a1af48dd12)
 
 
-### Model 2 
-The second(and technically third) model is a Multi Layer Perceptron (MLP) Neural network that also predicts a probability for every output class. First, sk-learns MLP model was used. This model was relatively slow which was balanced out by using less data. After switching to our own implementation of an MLP with pytorch, we got a faster model and could therefor also use more data for training the model. 
+### Model 2
+The second(and technically third) model is a Multi Layer Perceptron (MLP) Neural network that also predicts a probability for every output class. First, sk-learns MLP model was used. This model was relatively slow which was balanced out by using less data. After switching to our own implementation of an MLP with Pytorch, we got a faster model and could therefor also use more data for training the model.
 
 ### Final Model
-For the final model we kept the Multi Layer Perceptron Neural network. To tune it further a gridsearch was done and the paramthers tested was: 
-learning_rates = [0.001, 0.0005], hidden_sizes = [128,256], num_hidden_layers_list = [1, 2], dropout_probs = [0.0, 0.3], activation_functions = ['leakyrelu','relu','apach'], weight_decays = [0.0, 1e-4]. 
+For the final model we kept the Multi Layer Perceptron Neural network implemented with Pytorch. To improve it further a we explored and experimented with learning rates, number of nodes in the hidden layers, number of hidden layers, batch size, dropout, activation functions and weight decay. We ended up using 256 nodes in 10 hidden layers, a batch size of 1024, learning rate of 0.001, dropout with  probability of 0.3 and the  ReLU activation function. The biggest improvement was with memory management. By continuously removing unused variables from memory and dropping columns, we could now store all of the data in a single tensor! It required over 6 gb of RAM, but it was possible. This meant we could now use all of the data in the data instead of 1% of it. Having this much data meant we only used 1% of it for testing and 1% of it for validation, since 1% of the data was still around 380 000 data points. We also increased training speed by implementing GPU acceleration, but training a single epoch still took almost 20 minutes because of the 38 million data points.
 
 ## Results
 
@@ -113,6 +112,9 @@ The loss for every epoch during the training of the second model can be seen in 
 
 
 ### Final Model
+0.2738 1 epoch
+0.2710 2 epoch
+0.1861
 
 ## Discussions
 
@@ -141,8 +143,17 @@ To improve the model we therefore also plan to do some more hyperparameter tunin
 For the final model we are happy with using a MLP model and together with some hyperparameter tuning and training with more data we are hopeful to achieve a slightly better version than the second model. 
 
 ### Final Model
+For the final model the focus was to tune hyperparamethers further and use more of the data. The grid search done for the hyperparameters found the optimal combination of these. 
+
+
+
 
 ## Conclusions
+In conclusion, we are happy with the progress trying different models and tuning them to the best version. The final model was better than we initially expected for this difficult task. We can also conclude that one of our main struggles was to be able to work all of our data and this was especially difficult for the multinomial logistic regressor. Switching to a neural network partly helped with this, but rewriting some code and saving the preprocessed data saved a lot of time. One big lesson when working with a dataset this big is definitely the importance of not having to run code such as preeprocessing more than you need to.
+
+Another conclusion is the limitations of google colab that the entirety of this project was made in. The limitations in resources and runtime, made it more difficult to work on the project due to the runtime crashing in the middle of a session and a lot of code has to be run again. A project with data in these sizes might need to use something other than google colab to not run into this issue. 
+
+Due to the size of this data, we can conclude that the accuracy in project would probably not have been improved by more datapoints. Instead to get a better predictor, other solutions needs to be tried. The existed more data about the rides, but since these were contained after the full ride it couldn't have been used to predict the location, but maybe there are other ways to get data before that a similar model could use to predict better results. 
 
 
 

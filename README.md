@@ -183,3 +183,5 @@ Axel Orrhede: back-end-specialist: coding a lot, writing the reports, coding som
 Rebecka Eldh: all-in-all-doer: writing the reports, coding, teamworker, communicator
 
 Chi-en (Samuel) Kao: some data preprocessing, training baseline model, tuning hyperparameter, communicator, teamwoker.
+
+Omar Akbari: Showed up for our initial meetings, did some research on the features we chose not to use and passanger count.

@@ -140,7 +140,7 @@ The final testing accuracy for the final model was 28.65%. The model was trained
 ## Discussions
 
 ### The task 
-There are many possibilities for where someone might want to go in New York and it is therefore clear that the task of predicting where someone is going is a very difficult task. The expectations of the model should therefore not be too high. As the bare minimum we are comparing with a random choice that would give 5/262 = 1.9% as our top 5 accuracy. 
+There are many possibilities for where someone might want to go in New York and it is therefore clear that the task of predicting where someone is going is a very difficult task. The expectations of the model should therefore not be too high. As the bare minimum we are comparing with a random choice that would give 1-261/262*260/261*259/260*258/259*257/258 = 1.9% as our top 5 accuracy. 
 
 ### Model 1
 For the first model we chose to use a multinomial logistic regression model. Comparing the results from this model to the random classifier, the model is quite better than the random one and it is definitely a good start. However it is clear that it is not the most impressive result. 

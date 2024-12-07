@@ -54,21 +54,25 @@ For the relevant data we want to take a look on how it is distributed.
 The pick-up and drop-off locations are distributed as seen in the figures below. It is clear that some locations are more popular than others meaning that we have unbalanced dataset. It is also not possible to conclude anything about which locations are close together and not indicating the importance of preprocessing the locations. 
 
 <img width="887" alt="image" src="https://github.com/user-attachments/assets/3f64fd34-31ba-4fd9-b046-423ba7bac38e">
+
 *Figure 2: Distribution of LocationIDs for pick-up locations and drop-off locations for a sample of the data.*
 
 The timestamps of the taxi rides are distributed over the day and can be seen in the figure below. We can see that there are more rides during the day than in the night. This is just a small sample of all of the data but we can see that it follows a reasonable pattern which is good. 
 
 ![Timestamp distribution](https://github.com/user-attachments/assets/bbdda38e-5572-4ef6-8fa2-c886c16f5f68)
+
 *Figure 3: Distribution of timestamps over a day for the rides in a sample of the data.*
 
 Similarly the data is distributed over the entire year in the figure seen below where we have plotted a small sample of the data. We expect the data to be evenly distributed over the year and we can see that it usually does. However we can identify a smaller frequency in september and even after switching samples we still get the same result. Investigating this further we did not find any special event happening in New York for this day, but since we still have a lot of data we dont think it will influence the model. 
 
 ![Date distribution](https://github.com/user-attachments/assets/3956a34a-cea4-4d5a-bf00-01c240939d2f)
+
 *Figure 4: Distribution of dates over the year for the rides in a sample of the data.*
 
 For the Passenger_count, the distribution is shown in the figure below. We can see that there is usually only one passenger but sometimes there is more. There is also a few rides with zero passengers and we can assume that this is what happens if the driver fails to report it. 
 
 <img width="450" alt="image" src="https://github.com/user-attachments/assets/0446a7b6-2721-4f6a-a39f-4538ce81281f">
+
 *Figure 5: Distribution of the passenger count for the rides in a sample of the data.*
 
 #### Missing data
@@ -90,12 +94,16 @@ When training the first model a sample of the data was used to get an understand
 The model is described as the following formula where we are training the beta values.
 
 ![Formula Multinomial logistic regression](https://github.com/user-attachments/assets/2155cb95-af2e-4d4f-b479-a2a1af48dd12)
+
 *Figure 6: Formula for multinomial regression.*
 
 ### Model 2
 The second(and technically third) model is a Multi Layer Perceptron (MLP) Neural network that also predicts a probability for every output class. First, sk-learns MLP model was used. This model was relatively slow which was balanced out by using less data. After switching to our own implementation of an MLP with Pytorch, we got a faster model and could therefor also use more data for training the model.
 
-*Figure 7: Formula for multinomial regression.*
+![MLP](https://github.com/user-attachments/assets/a4c86ecd-5c11-4de7-b183-1e0b8a6d07da)
+
+*Figure 7: Visual representation of a Multi Layer Perceptron (MLP).*
+
 ### Final Model
 For the final model we kept the Multi Layer Perceptron Neural network implemented with Pytorch. To improve it further a we explored and experimented with learning rates, number of nodes in the hidden layers, number of hidden layers, batch size, dropout, activation functions and weight decay. We ended up using 1024 nodes in 6 hidden layers, a batch size of 1024, learning rate of 0.001, dropout with  probability of 0.3 and the  ReLU activation function. The biggest improvement was with memory management. By continuously removing unused variables from memory and dropping columns, we could now store all of the data in a single tensor! It required over 6 gb of RAM, but it was possible. This meant we could now use all of the data in the data instead of 1% of it. Having this much data meant we only used 1% of it for testing and 1% of it for validation, since 1% of the data was still around 380 000 data points. We also increased training speed by implementing GPU acceleration, but training a single epoch still took almost 20 minutes because of the 38 million data points.
 
@@ -106,20 +114,26 @@ The first model had an accuracy of 12.38% on the test data and 14.01% on the tra
 
 Below the fitting graph is shown.
 
-![image](https://github.com/user-attachments/assets/1bd60787-a249-46e5-9354-841cc5d8a0b3)
+![Fitting graph m1](https://github.com/user-attachments/assets/1bd60787-a249-46e5-9354-841cc5d8a0b3)
 
+*Figure 8: Fitting graph for Model 1 - Multinomial Logistic Regression.*
 
 ### Model 2
 The accuracy, as described in the evaluation section, resulted in 27.1% for testing data and 27.0% for training data. The model was trained using 1% of our data.
 
 The loss for every epoch during the training of the second model can be seen in the figure below.
-![image](https://github.com/user-attachments/assets/739f24ce-57d2-46ac-b3b5-6ece9f2d9201)
 
+![Loss over epoch m2](https://github.com/user-attachments/assets/739f24ce-57d2-46ac-b3b5-6ece9f2d9201)
+
+*Figure 9: Loss-function during training of Model 2 - Multi Layer Perceptron (MLP) Neural network.*
 
 ### Final Model
-The final testing accuracy for the final model was 28.65%. The model was trained with all of the data. The weights of the different layers can be seen in the figure below:
+The final testing accuracy for the final model was 28.65%. The model was trained with all of the data. The amounts of weights of the different layers can be seen in the figure below:
 
 <img width="325" alt="image" src="https://github.com/user-attachments/assets/ffe110de-ac4e-4ea6-ba87-f2d06e0f9a3d">
+
+*Figure 10: The amounts of weights of the different layers Final Model - Multi Layer Perceptron (MLP) Neural network.*
+
 
 
 ## Discussions

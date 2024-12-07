@@ -92,7 +92,7 @@ The model is described as the following formula where we are training the beta v
 The second(and technically third) model is a Multi Layer Perceptron (MLP) Neural network that also predicts a probability for every output class. First, sk-learns MLP model was used. This model was relatively slow which was balanced out by using less data. After switching to our own implementation of an MLP with Pytorch, we got a faster model and could therefor also use more data for training the model.
 
 ### Final Model
-For the final model we kept the Multi Layer Perceptron Neural network implemented with Pytorch. To improve it further a we explored and experimented with learning rates, number of nodes in the hidden layers, number of hidden layers, batch size, dropout, activation functions and weight decay. We ended up using 256 nodes in 10 hidden layers, a batch size of 1024, learning rate of 0.001, dropout with  probability of 0.3 and the  ReLU activation function. The biggest improvement was with memory management. By continuously removing unused variables from memory and dropping columns, we could now store all of the data in a single tensor! It required over 6 gb of RAM, but it was possible. This meant we could now use all of the data in the data instead of 1% of it. Having this much data meant we only used 1% of it for testing and 1% of it for validation, since 1% of the data was still around 380 000 data points. We also increased training speed by implementing GPU acceleration, but training a single epoch still took almost 20 minutes because of the 38 million data points.
+For the final model we kept the Multi Layer Perceptron Neural network implemented with Pytorch. To improve it further a we explored and experimented with learning rates, number of nodes in the hidden layers, number of hidden layers, batch size, dropout, activation functions and weight decay. We ended up using 1024 nodes in 6 hidden layers, a batch size of 1024, learning rate of 0.001, dropout with  probability of 0.3 and the  ReLU activation function. The biggest improvement was with memory management. By continuously removing unused variables from memory and dropping columns, we could now store all of the data in a single tensor! It required over 6 gb of RAM, but it was possible. This meant we could now use all of the data in the data instead of 1% of it. Having this much data meant we only used 1% of it for testing and 1% of it for validation, since 1% of the data was still around 380 000 data points. We also increased training speed by implementing GPU acceleration, but training a single epoch still took almost 20 minutes because of the 38 million data points.
 
 ## Results
 
@@ -143,7 +143,7 @@ To improve the model we therefore also plan to do some more hyperparameter tunin
 For the final model we are happy with using a MLP model and together with some hyperparameter tuning and training with more data we are hopeful to achieve a slightly better version than the second model. 
 
 ### Final Model
-For the final model the focus was to tune hyperparamethers further and use more of the data. The grid search done for the hyperparameters found the optimal combination of these. 
+For the final model the focus was to tune hyperparameters further and use more of the data. A grid search done for the hyperparameters found the better combinations of these. However, finding optimal hyperparameters is an impossible task. You could only use smaller subsets of data and train for fewer epochs, but that might affect which parameters are optimal! Less data would probably benefit from harder regularization and smaller networks, since you really have to fight against the overfitting when you have way more parameters than data points. When using the full data, we did not have this problem. Instead, the problem was that our model did not perform as well as we would have hoped. Even when trying with way larger network the model never seemed to be able to pass the 28% accuracy. We tried to implement a learning rate scheduler, early stopping and a qualitative hyperparameter optimization, but nothing could make us pass this 28% ceiling. Training a model to get 27% accuracy was done with ease but improving further seemed almost impossible. It was only with great effort that we managed to get the 28.7% accuracy for the final model. The only conclusion one can draw from this is that taxi rides in New York are not that predictable. There seems to be no pattern between time, location and amount of passengers and where 71% of all cab rides in NYC are going, which is an interesting find!
 
 
 
@@ -160,5 +160,7 @@ Due to the size of this data, we can conclude that the accuracy in project would
 ## Statement of contribution
 
 Axel Orrhede: back-end-specialist: coding a lot, writing the reports, coding some more, teamworker, communicator
+
 Rebecka Eldh: all-in-all-doer: writing the reports, coding, teamworker, communicator
+
 Chi-en (Samuel) Kao: some data preprocessing, training baseline model, tuning hyperparameter, communicator, teamwoker.

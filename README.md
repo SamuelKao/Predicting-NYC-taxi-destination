@@ -19,19 +19,23 @@ The environment being used is the default google colab environment from 11-03-20
     pip install -r requirements.txt 
     ```
 ## Abstract
-If you enter one of the famous yellow Taxis in New York City (NYC), the first question is “where are you going?” But what if the driver already had a list of the top 5 most common places to go, based on where they are and what time it is or other useful data that is known at that time. This could save loads of time and effort for everyone involved. The Taxi and Limousine Commission (TLC) have kept data on all cabs including pick-up and drop-off locations, timestamps, trip-distance, fare amount, tolls, passenger count and more. Using some of this data, this project aims to train a machine learning model to find the end location for a given taxi ride and possibly what the fare amount would be. All the common pick-up and drop-off locations are already encoded by TLC, making this a classification problem with a finite number of locations all over NYC. During 2023 a total of 38 million rides were documented, giving lots of data to use for the model. 
+If you enter one of the famous yellow Taxis in New York City (NYC), the first question is “where are you going?” But what if the driver already had a list of the top 5 most common places to go, based on where they are and what time it is or other useful data that is known at that time. This could save loads of time and effort for everyone involved. The Taxi and Limousine Commission (TLC) have kept data on all cabs including pick-up and drop-off locations, timestamps, trip-distance, fare amount, tolls, passenger count and more. Using some of this data, this project aims to train a machine learning model to find the end location for a given taxi ride. All the common pick-up and drop-off locations are already encoded by TLC, making this a classification problem with a finite number of locations all over NYC. During 2023 a total of 38 million rides were documented, giving lots of data to use for the model. Our models, ranging from logistic regression to multi-layer perceptrons, show a significant improvement in prediction accuracy, highlighting the importance of advanced methods for complex classification tasks. 
 
 ## Introduction
 Imagine stepping into one of New York City's iconic yellow taxis and having the driver already know your most likely destination based on the time, location, and other contextual data. Predicting NYC taxi destinations was chosen not just for its technical challenge but because it offers tangible benefits that extend far beyond convenience. With over 38 million taxi rides documented in 2023, the dataset provided by the Taxi Limousine Commission (TLC) offers a unique opportunity to explore real-world applications of machine learning on an unprecedented scale.
 
-What makes this project exciting is its potential to revolutionize urban transportation. A highly accurate predictive model could reduce wait times for passengers, improve route planning for drivers, and even inform city infrastructure decisions by highlighting high-demand areas. 
+What makes this project exciting is its potential to revolutionize urban transportation. A highly accurate predictive model could reduce wait times for passengers, improve route planning for drivers, and even inform city infrastructure decisions by highlighting high-demand areas. For example by understanding this data further and being able to predict where people want to go at specific times, the city will know how to improve the pubric transportation system. 
+
+### Data Description
+The data consists of a 12 parquet files with data from all cabs in New York in 2023. We then load these files into data frames, each represententing a different month of the year, and in total it is around 38 million data points. Every datapoint has 19 features of different kinds of formats ranging from datetime, int, float and object, meaning that some features need to be encoded in order to be useful. The data is retrieved from The Taxi & Limousine Commission (TLC) and includes some data points with missing features and outliers and therefore the data need to be cleaned before it can be used. 
+
+The pick-up and drop-off locations can be seen in the map below to get an idea of the distribution.
+
+![image](https://github.com/user-attachments/assets/91c74e98-566f-4fc7-8b6b-e716d1086130)
+
 
 ## Methods
 ### Preprocessing
-
-#### Data Description
-The data consists of a 12 parquet files with data from all cabs in New York in 2023. We then load these files into data frames, each represententing a different month of the year, and in total it is around 38 million data points. Every datapoint has 19 features of different kinds of formats ranging from datetime, int, float and object, meaning that some features need to be encoded in order to be useful. The data is retrieved from The Taxi & Limousine Commission (TLC) and includes some data points with missing features and outliers and therefore the data need to be cleaned before it can be used. 
-
 #### Relevant data
 Our model is meant to be used before the cab starts riding, meaning that a lot of features are "unknown". The features we can use are then pickup time(tpep_pickup_datetime), passenger count and pickup location(PULocationID), while dropoff location(DOLocationID) is the feature we want to predict. 
 
@@ -84,55 +88,66 @@ The model is described as the following formula where we are training the beta v
 ![image](https://github.com/user-attachments/assets/2155cb95-af2e-4d4f-b479-a2a1af48dd12)
 
 
-#### Process of first model
-The first model had an accuracy of 12.38% on the test data and 14.01% on the train data, using the definition of accuracy as described. Comparing this to a random classified that would have an accuracy of 5/262 = 1.9%, our model is quite better than the random one. We can also conclude that the multinomial logistic regression is very computionally heavy and takes very long to train without getting extrodinary result. It does not handle a high number of features well, and we suspect that this is the main reason for the model to train slowly. 
-In the fitting graph, the model is underfitting since the training MSE has not improved more than the test MSE. Therefore we know that the model needs futher training or a another model should be used. Below the fitting graph is shown.
-
-![image](https://github.com/user-attachments/assets/1bd60787-a249-46e5-9354-841cc5d8a0b3)
-
-For the next model we are thinking about training a neural network since that is scaleable to bigger datasets. The multinomial logistic regression takes very long even for the small sample we used and since we have a large dataset we want to use a model that can handle all of that to get a better model. For the next model we therfore should also be able to use more of the data which will probably lead to better accuracy as well. 
-
 ### Model 2 
 The second(and technically third) model is a Multi Layer Perceptron (MLP) Neural network that also predicts a probability for every output class. First, sk-learns MLP model was used. This model was relatively slow which was balanced out by using less data. After switching to our own implementation of an MLP with pytorch, we got a faster model and could therefor also use more data for training the model. 
 
-#### Result of second model
-The accuracy, as described above, resulted in 27.1% for testing data and 27.0% for training data. The model was trained using 1% of our data.
-
-#### Conclusion of second model
-The model is better than the first one, and it especially allowed us to use more of our data while also being faster to train. In the fitting graph we are still underfitting since the training and test accuracy is both slowly still improving for every training epoch when we stop training. This leads us to believe that we can improve our model with more training and if we use more data. 
-For tuning the model, we focused on finding the best kind of model which landed us in our own version with pytorch after trying sk learns version.
-The main tuning we did was for the model size, concluding that a bigger model was better, but we have yet to find an optimal size.
-To improve the model we therefore also plan to do some more hyperparameter tuning, for example the learning rate, batch size and model size. 
-
-For the final model we are happy with using a MLP model and together with some hyperparameter tuning and training with more data we are hopeful to achieve a slightly better version than the second model. 
+### Final Model
+For the final model we kept the Multi Layer Perceptron Neural network. To tune it further a gridsearch was done and the paramthers tested was: 
+learning_rates = [0.001, 0.0005], hidden_sizes = [128,256], num_hidden_layers_list = [1, 2], dropout_probs = [0.0, 0.3], activation_functions = ['leakyrelu','relu','apach'], weight_decays = [0.0, 1e-4]. 
 
 ## Results
 
 ### Model 1
 The first model had an accuracy of 12.38% on the test data and 14.01% on the train data, using the definition of accuracy as described in the evaluation section. 
 
+Below the fitting graph is shown.
+
+![image](https://github.com/user-attachments/assets/1bd60787-a249-46e5-9354-841cc5d8a0b3)
+
+
 ### Model 2
 The accuracy, as described in the evaluation section, resulted in 27.1% for testing data and 27.0% for training data. The model was trained using 1% of our data.
+
+The loss for every epoch during the training of the second model can be seen in the figure below.
+![image](https://github.com/user-attachments/assets/739f24ce-57d2-46ac-b3b5-6ece9f2d9201)
+
 
 ### Final Model
 
 ## Discussions
 
 ### The task 
-There are many possibilities for where someone might want to go in New York and it is therefore clear that the task of predicting where someone is going is a very difficult task. 
+There are many possibilities for where someone might want to go in New York and it is therefore clear that the task of predicting where someone is going is a very difficult task. The expectations of the model should therefore not be too high. As the bare minimum we are comparing with a random choice that would give 5/262 = 1.9% as our top 5 accuracy. 
 
 ### Model 1
+For the first model we chose to use a multinomial logistic regression model. Comparing the results from this model to the random classifier, the model is quite better than the random one and it is definitely a good start. However it is clear that it is not the most impressive result. 
 
+While creating the model we found that the multinomial logistic regression is very computionally heavy and takes very long to train without getting extrodinary result. It does not handle a high number of features well, and we suspect that this is the main reason for the model to train slowly. 
+
+In the fitting graph, the model is underfitting since the training MSE has not improved more than the test MSE. Therefore we know that the model needs futher training or a another model should be used. 
+
+One of the main issues with this model is the time it takes to train. To balance this out we only used a small sample during training and this will affect the model to not reach its full potential. We suspect that even if we manage to train on all the data, the model will not be the most optimal for this task since we might need more complex models that can find patterns in data. 
+
+For the next model we are thinking about training a neural network since that is scaleable to bigger datasets. The multinomial logistic regression takes very long even for the small sample we used and since we have a large dataset we want to use a model that can handle all of that to get a better model. For the next model we therfore should also be able to use more of the data which will probably lead to better accuracy as well. 
 
 ### Model 2
+The model is better than the first one, and it especially allowed us to use more of our data while also being faster to train. In the fitting graph we are still underfitting since the training and test accuracy is both slowly still improving for every training epoch when we stop training. This leads us to believe that we can improve our model with more training and if we use more data. 
 
+For tuning the model, we focused on finding the best kind of model which landed us in our own version with pytorch after trying sk learns version. 
+
+The main tuning we did was for the model size, concluding that a bigger model was better, but we have yet to find an optimal size.
+To improve the model we therefore also plan to do some more hyperparameter tuning, for example the learning rate, batch size and model size. 
+
+For the final model we are happy with using a MLP model and together with some hyperparameter tuning and training with more data we are hopeful to achieve a slightly better version than the second model. 
 
 ### Final Model
 
 ## Conclusions
 
+
+
 ## Statement of contribution
 
-Axel Orrhede: title: Contribution
-Rebecka Eldh: title: Contribution
-Samuel Kao: title: Contribution
+Axel Orrhede: back-end-specialist: coding a lot, writing the reports, coding some more, teamworker, communicator
+Rebecka Eldh: all-in-all-doer: writing the reports, coding, teamworker, communicator
+Chi-en (Samuel) Kao: title: Contribution

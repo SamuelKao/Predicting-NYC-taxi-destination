@@ -100,11 +100,14 @@ The model is described as the following formula where we are training the beta v
 ### Model 2
 The second(and technically third) model is a Multi Layer Perceptron (MLP) Neural network that also predicts a probability for every output class. First, sk-learns MLP model was used. This model was relatively slow which was balanced out by using less data. After switching to our own implementation of an MLP with Pytorch, we got a faster model and could therefor also use more data for training the model.
 
+In the figure below, a visual representation of a Multi Layer Perceptron Neural Network can be seen. 
+
 ![MLP](https://github.com/user-attachments/assets/a4c86ecd-5c11-4de7-b183-1e0b8a6d07da)
 
 *Figure 7: Visual representation of a Multi Layer Perceptron (MLP).*
 
 ### Final Model
+
 For the final model we kept the Multi Layer Perceptron Neural network implemented with Pytorch. To improve it further a we explored and experimented with learning rates, number of nodes in the hidden layers, number of hidden layers, batch size, dropout, activation functions and weight decay. We ended up using 1024 nodes in 6 hidden layers, a batch size of 1024, learning rate of 0.001, dropout with  probability of 0.3 and the  ReLU activation function. The biggest improvement was with memory management. By continuously removing unused variables from memory and dropping columns, we could now store all of the data in a single tensor! It required over 6 gb of RAM, but it was possible. This meant we could now use all of the data in the data instead of 1% of it. Having this much data meant we only used 1% of it for testing and 1% of it for validation, since 1% of the data was still around 380 000 data points. We also increased training speed by implementing GPU acceleration, but training a single epoch still took almost 20 minutes because of the 38 million data points.
 
 ## Results
@@ -134,12 +137,10 @@ The final testing accuracy for the final model was 28.65%. The model was trained
 
 *Figure 10: The amounts of weights of the different layers Final Model - Multi Layer Perceptron (MLP) Neural network.*
 
-
-
 ## Discussions
 
 ### The task 
-There are many possibilities for where someone might want to go in New York and it is therefore clear that the task of predicting where someone is going is a very difficult task. The expectations of the model should therefore not be too high. As the bare minimum we are comparing with a random choice that would give 1-261/262*260/261*259/260*258/259*257/258 = 1.9% as our top 5 accuracy. 
+There are many possibilities for where someone might want to go in New York and it is therefore clear that the task of predicting where someone is going is a very difficult task. The expectations of the model should therefore not be too high. As the bare minimum we are comparing with a random choice that would give 5/262 = 1.9% as our top 5 accuracy. 
 
 ### Model 1
 For the first model we chose to use a multinomial logistic regression model. Comparing the results from this model to the random classifier, the model is quite better than the random one and it is definitely a good start. However it is clear that it is not the most impressive result. 
@@ -165,8 +166,7 @@ For the final model we are happy with using a MLP model and together with some h
 ### Final Model
 For the final model the focus was to tune hyperparameters further and use more of the data. A grid search done for the hyperparameters found the better combinations of these. However, finding optimal hyperparameters is an impossible task. You could only use smaller subsets of data and train for fewer epochs, but that might affect which parameters are optimal! Less data would probably benefit from harder regularization and smaller networks, since you really have to fight against the overfitting when you have way more parameters than data points. When using the full data, we did not have this problem. Instead, the problem was that our model did not perform as well as we would have hoped. Even when trying with way larger network the model never seemed to be able to pass the 28% accuracy. We tried to implement a learning rate scheduler, early stopping and a qualitative hyperparameter optimization, but nothing could make us pass this 28% ceiling. Training a model to get 27% accuracy was done with ease but improving further seemed almost impossible. It was only with great effort that we managed to get the 28.7% accuracy for the final model. The only conclusion one can draw from this is that taxi rides in New York are not that predictable. There seems to be no pattern between time, location and amount of passengers and where 71% of all cab rides in NYC are going, which is an interesting find!
 
-
-
+Comparing with a predictor that always predicts the top 5 most common locations would have a 18% accuracy, meaning that our final model is still worth something:)
 
 ## Conclusions
 In conclusion, we are happy with the progress trying different models and tuning them to the best version. The final model was better than we initially expected for this difficult task. We can also conclude that one of our main struggles was to be able to work all of our data and this was especially difficult for the multinomial logistic regressor. Switching to a neural network partly helped with this, but rewriting some code and saving the preprocessed data saved a lot of time. One big lesson when working with a dataset this big is definitely the importance of not having to run code such as preeprocessing more than you need to.
@@ -174,7 +174,6 @@ In conclusion, we are happy with the progress trying different models and tuning
 Another conclusion is the limitations of google colab that the entirety of this project was made in. The limitations in resources and runtime, made it more difficult to work on the project due to the runtime crashing in the middle of a session and a lot of code has to be run again. A project with data in these sizes might need to use something other than google colab to not run into this issue. 
 
 Due to the size of this data, we can conclude that the accuracy in project would probably not have been improved by more datapoints. Instead to get a better predictor, other solutions needs to be tried. The existed more data about the rides, but since these were contained after the full ride it couldn't have been used to predict the location, but maybe there are other ways to get data before that a similar model could use to predict better results. 
-
 
 
 ## Statement of contribution
